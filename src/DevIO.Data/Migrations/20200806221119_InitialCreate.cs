@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DevIO.Data.Migrations
 {
-    public partial class Initial : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,8 +12,8 @@ namespace DevIO.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    Nome = table.Column<string>(type: "varchar(200)", nullable: false),
-                    Documento = table.Column<string>(type: "varchar(14)", nullable: false),
+                    Nome = table.Column<string>(nullable: true),
+                    Documento = table.Column<string>(nullable: true),
                     TipoFornecedor = table.Column<int>(nullable: false),
                     Ativo = table.Column<bool>(nullable: false)
                 },
@@ -28,13 +28,13 @@ namespace DevIO.Data.Migrations
                 {
                     Id = table.Column<Guid>(nullable: false),
                     FornecedorId = table.Column<Guid>(nullable: false),
-                    Logradouro = table.Column<string>(type: "varchar(200)", nullable: false),
-                    Numero = table.Column<string>(type: "varchar(50)", nullable: false),
-                    Complemento = table.Column<string>(type: "varchar(250)", nullable: true),
-                    Cep = table.Column<string>(type: "varchar(8)", nullable: false),
-                    Bairro = table.Column<string>(type: "varchar(100)", nullable: false),
-                    Cidade = table.Column<string>(type: "varchar(100)", nullable: false),
-                    Estado = table.Column<string>(type: "varchar(50)", nullable: false)
+                    Logradouro = table.Column<string>(nullable: true),
+                    Numero = table.Column<string>(nullable: true),
+                    Complemento = table.Column<string>(nullable: true),
+                    Cep = table.Column<string>(nullable: true),
+                    Bairro = table.Column<string>(nullable: true),
+                    Cidade = table.Column<string>(nullable: true),
+                    Estado = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -44,7 +44,7 @@ namespace DevIO.Data.Migrations
                         column: x => x.FornecedorId,
                         principalTable: "Fornecedores",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -53,9 +53,9 @@ namespace DevIO.Data.Migrations
                 {
                     Id = table.Column<Guid>(nullable: false),
                     FornecedorId = table.Column<Guid>(nullable: false),
-                    Nome = table.Column<string>(type: "varchar(200)", nullable: false),
-                    Descricao = table.Column<string>(type: "varchar(1000)", nullable: false),
-                    Imagem = table.Column<string>(type: "varchar(100)", nullable: false),
+                    Nome = table.Column<string>(nullable: true),
+                    Descricao = table.Column<string>(nullable: true),
+                    Imagem = table.Column<string>(nullable: true),
                     Valor = table.Column<decimal>(nullable: false),
                     DataCadastro = table.Column<DateTime>(nullable: false),
                     Ativo = table.Column<bool>(nullable: false)
@@ -68,7 +68,7 @@ namespace DevIO.Data.Migrations
                         column: x => x.FornecedorId,
                         principalTable: "Fornecedores",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(

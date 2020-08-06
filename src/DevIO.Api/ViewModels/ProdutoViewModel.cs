@@ -24,7 +24,7 @@ namespace DevIO.Api.ViewModels
         public DateTime DataCadastro { get; set; }
         public bool Ativo { get; set; }
 
-        /* EF Relations */
-        public FornecedorViewModel Fornecedor { get; set; }
+        [ScaffoldColumn(false)]
+        public string NomeFornecedor { get; set; }
     }
 }
