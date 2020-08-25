@@ -6,6 +6,8 @@ namespace DevIO.Api.ViewModels
     public class EnderecoViewModel
     {
         [Key]
+        public Guid Id { get; set; }
+
         public Guid FornecedorId { get; set; }
 
         [Required(ErrorMessage = "O campo {0} é obrigatório")]

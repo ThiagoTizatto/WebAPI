@@ -18,16 +18,19 @@ namespace DevIO.Api.Controllers
     {
         private readonly IFornecedorRepository _fornecedorRepository;
         private readonly IFornecedorService _fornecedorService;
+        private readonly IEnderecoRepository _enderecoRepository;
         private readonly IMapper _mapper;
 
-        public FornecedoresController(IFornecedorRepository fornecedorRepository, 
-                                        IMapper mapper, 
+        public FornecedoresController(IFornecedorRepository fornecedorRepository,
+                                        IMapper mapper,
                                         IFornecedorService fornecedorService,
-                                        INotificador notificador):base(notificador)
+                                        INotificador notificador, 
+                                        IEnderecoRepository enderecoRepository) : base(notificador)
         {
             _fornecedorRepository = fornecedorRepository;
             _mapper = mapper;
             _fornecedorService = fornecedorService;
+            _enderecoRepository = enderecoRepository;
         }
         [HttpGet]
         public async Task<IEnumerable<FornecedorViewModel>> ObterTodos()
@@ -46,6 +49,8 @@ namespace DevIO.Api.Controllers
 
             return fornecedor;
         }
+
+       
 
         [HttpPost()]
         public async Task<ActionResult<FornecedorViewModel>> Adicionar(FornecedorViewModel  fornecedorViewModel)
@@ -86,6 +91,30 @@ namespace DevIO.Api.Controllers
 
             return CustomResponse();
 
+        }
+        
+        [HttpGet("obter-endereco/{id:guid}")]
+        public async Task<ActionResult<FornecedorViewModel>> ObterEnderecoPorID(Guid id)
+        {
+            var fornecedor = _mapper.Map<FornecedorViewModel>(await _enderecoRepository.ObterPorId(id));
+
+            if (fornecedor == null) return NotFound();
+
+            return fornecedor;
+        }
+
+        [HttpPut("atualizar-endereco/{id:guid}")]
+        public async Task<ActionResult<FornecedorViewModel>> AtualizarEndereco(Guid id, EnderecoViewModel enderecoViewModel)
+        {
+            if (id != enderecoViewModel.Id) return BadRequest();
+
+            if (!ModelState.IsValid) return CustomResponse(ModelState);
+
+            var endereco = _mapper.Map<Endereco>(enderecoViewModel);
+
+            await _enderecoRepository.Atualizar(endereco);
+
+            return CustomResponse(enderecoViewModel);
         }
     }
 }
